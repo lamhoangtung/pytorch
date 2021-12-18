@@ -10,26 +10,6 @@ on:
     - cron: 45 0,4,8,12,16,20 * * *
   workflow_dispatch:
 
-env:
-  BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
-  DOCKER_IMAGE_BASE: 308535385114.dkr.ecr.us-east-1.amazonaws.com/pytorch/pytorch-linux-xenial-cuda11.1-cudnn8-py3-gcc7
-  SCCACHE_BUCKET: ossci-compiler-cache-circleci-v2
-  XLA_CLANG_CACHE_S3_BUCKET_NAME: ossci-compiler-clang-cache-circleci-xla
-  TORCH_CUDA_ARCH_LIST: 5.2
-  IN_CI: 1
-  IS_GHA: 1
-  # This is used for the phase of adding wheel tests only, will be removed once completed
-  IN_WHEEL_TEST: 1
-  # Used for custom_opertor, jit_hooks, custom_backend, see .jenkins/pytorch/build.sh
-  CUSTOM_TEST_ARTIFACT_BUILD_DIR: build/custom_test_artifacts
-  ALPINE_IMAGE: "308535385114.dkr.ecr.us-east-1.amazonaws.com/tool/alpine"
-  PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  AWS_DEFAULT_REGION: us-east-1
-  PR_NUMBER: ${{ github.event.pull_request.number }}
-  SHA1: ${{ github.event.pull_request.head.sha || github.sha }}
-  PYTORCH_RETRY_TEST_CASES: 1
-  DEBUG: 1
 concurrency:
   group: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug-${{ github.event.pull_request.number || github.sha }}-${{ github.event_name == 'workflow_dispatch' }}
   cancel-in-progress: true
@@ -60,6 +40,24 @@ jobs:
     needs: [ciflow_should_run]
     timeout-minutes: 240
     env:
+      BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
+      DOCKER_IMAGE_BASE: 308535385114.dkr.ecr.us-east-1.amazonaws.com/pytorch/pytorch-linux-xenial-cuda11.1-cudnn8-py3-gcc7
+      SCCACHE_BUCKET: ossci-compiler-cache-circleci-v2
+      XLA_CLANG_CACHE_S3_BUCKET_NAME: ossci-compiler-clang-cache-circleci-xla
+      TORCH_CUDA_ARCH_LIST: 5.2
+      IN_CI: 1
+      IS_GHA: 1
+      # This is used for the phase of adding wheel tests only, will be removed once completed
+      IN_WHEEL_TEST: 1
+      # Used for custom_opertor, jit_hooks, custom_backend, see .jenkins/pytorch/build.sh
+      CUSTOM_TEST_ARTIFACT_BUILD_DIR: build/custom_test_artifacts
+      ALPINE_IMAGE: "308535385114.dkr.ecr.us-east-1.amazonaws.com/tool/alpine"
+      PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_DEFAULT_REGION: us-east-1
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      SHA1: ${{ github.event.pull_request.head.sha || github.sha }}
+      DEBUG: 1
       JOB_BASE_NAME: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug-build
     outputs:
       docker_image: ${{ steps.calculate-tag.outputs.docker_image }}
@@ -259,6 +257,7 @@ jobs:
     needs: [ciflow_should_run]
     timeout-minutes: 240
     env:
+      BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
       TEST_RUNNER_TYPE: linux.4xlarge.nvidia.gpu
       ENABLE_DISTRIBUTED_TEST: 1
       ENABLE_JIT_LEGACY_TEST: ''
@@ -298,6 +297,25 @@ jobs:
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 240
     env:
+      BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
+      DOCKER_IMAGE_BASE: 308535385114.dkr.ecr.us-east-1.amazonaws.com/pytorch/pytorch-linux-xenial-cuda11.1-cudnn8-py3-gcc7
+      SCCACHE_BUCKET: ossci-compiler-cache-circleci-v2
+      XLA_CLANG_CACHE_S3_BUCKET_NAME: ossci-compiler-clang-cache-circleci-xla
+      TORCH_CUDA_ARCH_LIST: 5.2
+      IN_CI: 1
+      IS_GHA: 1
+      # This is used for the phase of adding wheel tests only, will be removed once completed
+      IN_WHEEL_TEST: 1
+      # Used for custom_opertor, jit_hooks, custom_backend, see .jenkins/pytorch/build.sh
+      CUSTOM_TEST_ARTIFACT_BUILD_DIR: build/custom_test_artifacts
+      ALPINE_IMAGE: "308535385114.dkr.ecr.us-east-1.amazonaws.com/tool/alpine"
+      PR_LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      AWS_DEFAULT_REGION: us-east-1
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      SHA1: ${{ github.event.pull_request.head.sha || github.sha }}
+      PYTORCH_RETRY_TEST_CASES: 1
+      DEBUG: 1
       DOCKER_IMAGE: ${{ needs.build.outputs.docker_image }}
       JOB_BASE_NAME: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug-test
       TEST_CONFIG: ${{ matrix.config }}
