@@ -17,10 +17,6 @@ on:
 !{{ common.concurrency("pull") }}
 
 jobs:
-{% for job in jobs -%}
-    {%- include job.template %}
-{% endfor %}
-
   test-tools:
     if: ${{ github.repository == 'pytorch/pytorch' }}
     runs-on: ubuntu-18.04
@@ -46,7 +42,7 @@ jobs:
         run: python -m unittest discover -vs tools/test -p 'test_*.py'
 
   # LINT JOBS
-  Lint-quick-checks:
+  lint-quick-checks:
     runs-on: ubuntu-18.04
     steps:
       - name: Setup Python
@@ -62,7 +58,7 @@ jobs:
       - name: Ensure consistent CircleCI YAML config
         if: ${{ always() && steps.requirements.outcome == 'success' }}
         run: cd .circleci && ./ensure-consistency.py
-      - name: Lint native_functions.yaml
+      - name: lint native_functions.yaml
         if: ${{ always() && steps.requirements.outcome == 'success' }}
         run: |
           pip3 install ruamel.yaml==0.17.4 --user
@@ -147,7 +143,7 @@ jobs:
           python3 -m pip install boto3==1.19.12
           .github/scripts/lint_test_ownership.py
 
-  Lint-clang-format:
+  lint-clang-format:
     runs-on: ubuntu-18.04
     if: ${{ github.event_name == 'pull_request' }}
     steps:
@@ -187,7 +183,7 @@ jobs:
           echo "$GIT_DIFF"
           exit 1
 
-  Lint-py2-setup-validate-errormsg:
+  lint-py2-setup-validate-errormsg:
     runs-on: ubuntu-18.04
     steps:
       - name: Setup Python
@@ -206,7 +202,7 @@ jobs:
       - name: Keep torch.utils.collect_env python2 compliant
         run: python2 -m py_compile torch/utils/collect_env.py
 
-  Lint-shellcheck:
+  lint-shellcheck:
     runs-on: ubuntu-18.04
     steps:
       - name: Setup Python
@@ -285,7 +281,7 @@ jobs:
           ./actionlint --color
           rm actionlint
 
-  Lint-toc:
+  lint-toc:
     runs-on: ubuntu-18.04
     # https://github.com/actions/virtual-environments/issues/599#issuecomment-602754687
     env:
@@ -321,7 +317,7 @@ jobs:
             false
           fi
 
-  Lint-flake8-py3:
+  lint-flake8-py3:
     runs-on: ubuntu-18.04
     steps:
       - name: Setup Python
@@ -381,7 +377,7 @@ jobs:
           commit_sha: ${{ github.event.pull_request.head.sha }}
           mode: json
 
-  Lint-clang-tidy:
+  lint-clang-tidy:
     runs-on: linux.2xlarge
     container:
       # ubuntu20.04-cuda11.2-py3.8-tidy11
@@ -470,7 +466,7 @@ jobs:
           commit_sha: ${{ github.event.pull_request.head.sha }}
           mode: json
 
-  Lint-cmakelint:
+  lint-cmakelint:
     runs-on: ubuntu-18.04
     steps:
       - name: Setup Python
@@ -492,7 +488,7 @@ jobs:
           grep -E -z -v '^(cmake/Modules/|cmake/Modules_CUDA_fix/|cmake/Caffe2Config.cmake.in|aten/src/ATen/ATenConfig.cmake.in|cmake/Caffe2ConfigVersion.cmake.in|cmake/TorchConfig.cmake.in|cmake/TorchConfigVersion.cmake.in|cmake/cmake_uninstall.cmake.in)' | \
           xargs -0 cmakelint --config=.cmakelintrc --spaces=2 --quiet
 
-  Lint-mypy:
+  lint-mypy:
     runs-on: ubuntu-18.04
     steps:
       - name: Setup Python
@@ -532,3 +528,7 @@ jobs:
             echo 'Please fix the above mypy warnings.'
             false
           fi
+
+{% for job in jobs -%}
+    {%- include job.template %}
+{% endfor %}
