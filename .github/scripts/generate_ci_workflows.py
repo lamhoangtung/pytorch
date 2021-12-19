@@ -868,7 +868,12 @@ def main() -> None:
     linux_jobs = [w for w in LINUX_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
     windows_jobs = [w for w in WINDOWS_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
     android_jobs = [w for w in ANDROID_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
-    content = template.render(linux_jobs=linux_jobs, windows_jobs=windows_jobs, android_jobs=android_jobs, ciflow_config=LINUX_WORKFLOWS[0].ciflow_config)
+    bazel_jobs = [w for w in BAZEL_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
+    content = template.render(linux_jobs=linux_jobs,
+                              windows_jobs=windows_jobs,
+                              android_jobs=android_jobs,
+                              bazel_jobs=bazel_jobs,
+                              ciflow_config=LINUX_WORKFLOWS[0].ciflow_config)
 
     with open(output_file_path, "w") as f:
         f.write(content)
