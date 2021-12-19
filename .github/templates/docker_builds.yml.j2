@@ -13,8 +13,8 @@ on:
     paths:
       - '.circleci/docker/**'
       - '.github/workflows/docker_builds.yml'
-    schedule:
-      - cron: 1 * */7 * *
+  schedule:
+    - cron: 1 * */7 * *
 
 !{{ common.concurrency(build_environment) }}
 
