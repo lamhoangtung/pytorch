@@ -265,6 +265,7 @@
     env:
       AWS_DEFAULT_REGION: us-east-1
       ALPINE_IMAGE: "308535385114.dkr.ecr.us-east-1.amazonaws.com/tool/alpine"
+      BUILD_ENVIRONMENT: !{{ job.build_environment }}
       DOCKER_IMAGE: ${{ needs.!{{ job.build_name() }}.outputs.docker_image }}
       DOCS_TYPE: ${{ matrix.docs_type }}
       WITH_PUSH: ${{ github.event_name == 'schedule' }}

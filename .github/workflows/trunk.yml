@@ -3969,6 +3969,7 @@ jobs:
     runs-on: macos-11
     timeout-minutes: 240
     env:
+      BUILD_ENVIRONMENT: macos-11-py3-x86-64
       JOB_BASE_NAME: macos-11-py3-x86-64-test
       TEST_CONFIG: default
       SHARD_NUMBER: 1
@@ -4076,6 +4077,7 @@ jobs:
     runs-on: macos-11
     timeout-minutes: 240
     env:
+      BUILD_ENVIRONMENT: macos-11-py3-x86-64
       JOB_BASE_NAME: macos-11-py3-x86-64-test
       TEST_CONFIG: default
       SHARD_NUMBER: 2

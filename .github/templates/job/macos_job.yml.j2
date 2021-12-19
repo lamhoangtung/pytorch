@@ -54,6 +54,7 @@
     runs-on: !{{ test_job.runner }}
     timeout-minutes: !{{ common.timeout_minutes }}
     env:
+      BUILD_ENVIRONMENT: !{{ job.build_environment }}
       JOB_BASE_NAME: !{{ job.build_environment }}-test
       TEST_CONFIG: !{{ test_job.config }}
       SHARD_NUMBER: !{{ test_job.shard }}
