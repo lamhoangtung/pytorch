@@ -215,7 +215,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-force_on_cpu-1-1-windows.4xlarge'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -231,7 +231,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-force_on_cpu-1-1-windows.4xlarge'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -389,7 +389,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -405,7 +405,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -563,7 +563,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -579,7 +579,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -737,7 +737,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -753,7 +753,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1015,7 +1015,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1031,7 +1031,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1189,7 +1189,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1205,7 +1205,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1363,7 +1363,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1379,7 +1379,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-windows.8xlarge.nvidia.gpu'
         shell: powershell
         run: |
           # -ir => recursive include all files in pattern
@@ -1855,7 +1855,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-linux.8xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -1871,7 +1871,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-linux.8xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -2115,7 +2115,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -2131,7 +2131,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -2375,7 +2375,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -2391,7 +2391,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -3058,7 +3058,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-linux.8xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -3074,7 +3074,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-distributed-1-1-linux.8xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -3319,7 +3319,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -3335,7 +3335,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -3580,7 +3580,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -3596,7 +3596,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -4261,7 +4261,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -4277,7 +4277,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-1-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
@@ -4521,7 +4521,7 @@ jobs:
       - name: Zip JSONs for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test jsons if they exist
           rm -f test-jsons-*.zip
@@ -4537,7 +4537,7 @@ jobs:
       - name: Zip test reports for upload
         if: always()
         env:
-          FILE_SUFFIX: '${{ github.job }}-${{ matrix.config }}-${{ matrix.shard }}-${{ matrix.num_shards }}-${{ matrix.runner }}'
+          FILE_SUFFIX: '${{ github.job }}-default-2-2-linux.4xlarge.nvidia.gpu'
         run: |
           # Remove any previous test reports if they exist
           rm -f test-reports-*.zip
