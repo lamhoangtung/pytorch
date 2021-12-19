@@ -1,4 +1,4 @@
-# Template is at:    .github/templates/ci_docker_build.yml.j2
+# Template is at:    .github/templates/docker_builds.yml.j2
 # Generation script: .github/scripts/generate_ci_workflows.py
 name: docker-builds
 
@@ -8,7 +8,7 @@ on:
     types: [opened, synchronize, reopened]
     paths:
       - '.circleci/docker/**'
-      - '.github/workflows/generated-docker-builds.yml'
+      - '.github/workflows/docker_builds.yml'
     schedule:
       - cron: 1 * */7 * *
 
