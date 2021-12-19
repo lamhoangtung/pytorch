@@ -21,3 +21,6 @@ jobs:
 {%- for job in windows_jobs -%}
     {%- include 'windows_job.yml.j2' %}
 {% endfor %}
+{%- for job in android_jobs -%}
+    {%- include 'android_job.yml.j2' %}
+{% endfor %}

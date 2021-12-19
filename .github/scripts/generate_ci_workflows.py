@@ -245,20 +245,17 @@ class CIWorkflow:
     #             output_file.write("\n")
     #     print(output_file_path)
 
-    def _normalized_build_environment(self, suffix: str) -> str:
+    def normalized_build_environment(self, suffix: str) -> str:
         return self.build_environment.replace(".", "_") + suffix
 
     def build_name(self):
-        return self._normalized_build_environment("-build")
-
-    def matrix_name(self):
-        return self._normalized_build_environment("-matrix")
+        return self.normalized_build_environment("-build")
 
     def test_name(self):
-        return self._normalized_build_environment("-test")
+        return self.normalized_build_environment("-test")
 
     def docs_name(self):
-        return self._normalized_build_environment("-docs")
+        return self.normalized_build_environment("-docs")
 
     def test_jobs(self):
         if self.arch == "linux":
@@ -867,10 +864,11 @@ def main() -> None:
     #     ciflow_ruleset.add_label_rule(workflow.ciflow_config.labels, workflow.build_environment)
     ciflow_ruleset.generate_json()
     output_file_path = GITHUB_DIR / "workflows/pull.yml"
-    template = jinja_env.get_template("pr_workflow.yml.j2")
+    template = jinja_env.get_template("pull.yml.j2")
     linux_jobs = [w for w in LINUX_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
     windows_jobs = [w for w in WINDOWS_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
-    content = template.render(linux_jobs=linux_jobs, windows_jobs=windows_jobs, ciflow_config=LINUX_WORKFLOWS[0].ciflow_config)
+    android_jobs = [w for w in ANDROID_WORKFLOWS if LABEL_CIFLOW_DEFAULT in w.ciflow_config.labels]
+    content = template.render(linux_jobs=linux_jobs, windows_jobs=windows_jobs, android_jobs=android_jobs, ciflow_config=LINUX_WORKFLOWS[0].ciflow_config)
 
     with open(output_file_path, "w") as f:
         f.write(content)
