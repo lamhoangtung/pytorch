@@ -596,8 +596,8 @@ def main() -> None:
     generate_workflow(TRUNK_JOBS, "trunk.yml.j2", "trunk.yml")
 
     # Write docker workflow:
-    template = jinja_env.get_template("ci_docker_build.yml.j2")
-    with open(GITHUB_DIR / "workflows" / "ci_docker_build.yml", "w") as f:
+    template = jinja_env.get_template("docker_build.yml.j2")
+    with open(GITHUB_DIR / "workflows" / "docker_build.yml", "w") as f:
         f.write(template.render(**asdict(DOCKER_WORKFLOW)))
 
 

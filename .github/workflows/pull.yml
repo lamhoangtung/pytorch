@@ -6,7 +6,7 @@ on:
   pull_request
 
 concurrency:
-  group: ci-pull-${{ github.event.pull_request.number || github.sha }}
+  group: pull-${{ github.event.pull_request.number || github.sha }}-${{ github.event_name == 'workflow_dispatch' }}
   cancel-in-progress: true
 
 jobs:

@@ -10,7 +10,7 @@ on:
     - cron: 45 0,4,8,12,16,20 * * *
 
 concurrency:
-  group: ci-periodic-${{ github.event.pull_request.number || github.sha }}
+  group: periodic-${{ github.event.pull_request.number || github.sha }}-${{ github.event_name == 'workflow_dispatch' }}
   cancel-in-progress: true
 
 jobs:

@@ -13,7 +13,7 @@ on:
       - fbsync
 
 concurrency:
-  group: ci-trunk-${{ github.event.pull_request.number || github.sha }}
+  group: trunk-${{ github.event.pull_request.number || github.sha }}-${{ github.event_name == 'workflow_dispatch' }}
   cancel-in-progress: true
 
 jobs:
@@ -3970,6 +3970,10 @@ jobs:
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: macos-11-py3-x86-64
+      COMPACT_JOB_NAME: macos-11-py3-x86-64
+      IN_CI: 1
+      IS_GHA: 1
+      PYTORCH_RETRY_TEST_CASES: 1
       JOB_BASE_NAME: macos-11-py3-x86-64-test
       TEST_CONFIG: default
       SHARD_NUMBER: 1
@@ -4078,6 +4082,10 @@ jobs:
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: macos-11-py3-x86-64
+      COMPACT_JOB_NAME: macos-11-py3-x86-64
+      IN_CI: 1
+      IS_GHA: 1
+      PYTORCH_RETRY_TEST_CASES: 1
       JOB_BASE_NAME: macos-11-py3-x86-64-test
       TEST_CONFIG: default
       SHARD_NUMBER: 2
