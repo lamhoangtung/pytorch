@@ -1,4 +1,7 @@
   !{{ job.build_name() }}:
+    {% if use_ciflow %}
+    needs: [ciflow-should-run]
+    {% endif %}
     runs-on: macos-10.15
     timeout-minutes: !{{ common.timeout_minutes }}
     env:

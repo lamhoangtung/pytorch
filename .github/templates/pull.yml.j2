@@ -7,11 +7,17 @@ name: pull
 {%- endblock %}
 
 on:
-  pull_request
+  pull_request:
+  push:
+    branches:
+      - master
+      - release/*
+      - fbsync
 
 !{{ common.concurrency("pull") }}
 
 jobs:
+
 {% for job in jobs -%}
     {%- include job.template %}
 {% endfor %}

@@ -583,21 +583,21 @@ def main() -> None:
         undefined=jinja2.StrictUndefined,
     )
 
-    def generate_workflow(jobs: List[CIWorkflow], template_path: str, output_path: str) -> None:
+    def generate_workflow(jobs: List[CIWorkflow], use_ciflow: bool, template_path: str, output_path: str) -> None:
         p: Path = GITHUB_DIR / "workflows" / output_path
         template = jinja_env.get_template(template_path)
-        content = template.render(jobs=jobs)
+        content = template.render(jobs=jobs, use_ciflow=use_ciflow)
 
         with open(p, "w") as output_file:
             output_file.write(content)
 
-    generate_workflow(PULL_JOBS, "pull.yml.j2", "pull.yml")
-    generate_workflow(PERIODIC_JOBS, "periodic.yml.j2", "periodic.yml")
-    generate_workflow(TRUNK_JOBS, "trunk.yml.j2", "trunk.yml")
+    generate_workflow(PULL_JOBS, False, "pull.yml.j2", "pull.yml")
+    generate_workflow(PERIODIC_JOBS, True, "periodic.yml.j2", "periodic.yml")
+    generate_workflow(TRUNK_JOBS, True, "trunk.yml.j2", "trunk.yml")
 
     # Write docker workflow:
-    template = jinja_env.get_template("docker_build.yml.j2")
-    with open(GITHUB_DIR / "workflows" / "docker_build.yml", "w") as f:
+    template = jinja_env.get_template("docker_builds.yml.j2")
+    with open(GITHUB_DIR / "workflows" / "docker_builds.yml", "w") as f:
         f.write(template.render(**asdict(DOCKER_WORKFLOW)))
 
 

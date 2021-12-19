@@ -14,9 +14,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
+  ciflow-should-run:
+    runs-on: ubuntu-18.04
+    if: ${{ (github.repository == 'pytorch/pytorch') &&
+            (github.event_name == 'push' || github.event_name == 'schedule') ||
+            contains(github.event.pull_request.labels.*.name, 'ciflow/all') ||
+            false
+         }}
+    steps:
+      - name: noop
+        run: echo running ciflow-should-run
 
   periodic-win-vs2019-cuda11_5-py3-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: "windows.4xlarge"
     timeout-minutes: 240
     env:
@@ -808,8 +820,10 @@ jobs:
         run: |
           rm -rf ./*
 
-
   periodic-win-vs2019-cuda11_1-py3-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: "windows.4xlarge"
     timeout-minutes: 240
     env:
@@ -1435,6 +1449,9 @@ jobs:
         run: |
           rm -rf ./*
   periodic-linux-bionic-cuda11_5-py3_6-gcc7-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -2430,6 +2447,9 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-libtorch-linux-bionic-cuda11_5-py3_6-gcc7-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -2634,6 +2654,9 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3633,6 +3656,9 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-libtorch-linux-xenial-cuda11_1-py3_6-gcc7-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3837,6 +3863,9 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-build:
+    
+    needs: [ciflow-should-run]
+    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:

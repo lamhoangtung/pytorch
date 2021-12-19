@@ -210,6 +210,19 @@ concurrency:
           python3 tools/render_junit.py test/
 {%- endmacro -%}
 
+{%- macro ciflow_job() -%}
+  ciflow-should-run:
+    runs-on: ubuntu-18.04
+    if: ${{ (github.repository == 'pytorch/pytorch') &&
+            (github.event_name == 'push' || github.event_name == 'schedule') ||
+            contains(github.event.pull_request.labels.*.name, 'ciflow/all') ||
+            false
+         }}
+    steps:
+      - name: noop
+        run: echo running ciflow-should-run
+{%- endmacro -%}
+
 {%- macro calculate_docker_image(always_rebuild) -%}
       - name: Calculate docker image tag
         id: calculate-tag

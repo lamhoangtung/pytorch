@@ -19,6 +19,8 @@ on:
 !{{ common.concurrency("trunk") }}
 
 jobs:
+  !{{ common.ciflow_job() }}
+
 {% for job in jobs -%}
     {%- include job.template %}
 {% endfor %}
