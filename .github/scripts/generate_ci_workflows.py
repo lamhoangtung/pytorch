@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Dict, Set, List
 
 import jinja2
-import sys
 from typing_extensions import Literal, TypedDict
 
 Arch = Literal["windows", "linux", "macos"]
@@ -198,21 +197,6 @@ class DockerWorkflow:
     # Optional fields
     cuda_version: str = ""
     is_scheduled: str = ""
-
-    def generate_workflow_file(self, workflow_template: jinja2.Template) -> None:
-        output_file_path = GITHUB_DIR / "workflows/generated-docker-builds.yml"
-        with open(output_file_path, "w") as output_file:
-            GENERATED = "generated"  # Note that please keep the variable GENERATED otherwise phabricator will hide the whole file
-            output_file.writelines([f"# @{GENERATED} DO NOT EDIT MANUALLY\n"])
-            try:
-                content = workflow_template.render(asdict(self))
-            except Exception as e:
-                print(f"Failed on template: {workflow_template}", file=sys.stderr)
-                raise e
-            output_file.write(content)
-            if content[-1] != "\n":
-                output_file.write("\n")
-        print(output_file_path)
 
 
 PULL_JOBS = [
@@ -584,14 +568,12 @@ DOCKER_IMAGES.update(
     }
 )
 
-DOCKER_JOBS = [
-    DockerWorkflow(
-        build_environment="docker-builds",
-        docker_images=sorted(DOCKER_IMAGES),
-        # Run weekly to ensure they can build
-        is_scheduled="1 * */7 * *",
-    ),
-]
+DOCKER_WORKFLOW = DockerWorkflow(
+    build_environment="docker-builds",
+    docker_images=sorted(DOCKER_IMAGES),
+    # Run weekly to ensure they can build
+    is_scheduled="1 * */7 * *",
+)
 
 
 def main() -> None:
@@ -612,7 +594,11 @@ def main() -> None:
     generate_workflow(PULL_JOBS, "pull.yml.j2", "pull.yml")
     generate_workflow(PERIODIC_JOBS, "periodic.yml.j2", "periodic.yml")
     generate_workflow(TRUNK_JOBS, "trunk.yml.j2", "trunk.yml")
-    # generate_workflow(DOCKER_JOBS, "ci_docker_build.yml.j2", "ci_docker_build.yml")
+
+    # Write docker workflow:
+    template = jinja_env.get_template("ci_docker_build.yml.j2")
+    with open(GITHUB_DIR / "workflows" / "ci_docker_build.yml", "w") as f:
+        f.write(template.render(**asdict(DOCKER_WORKFLOW)))
 
 
 if __name__ == "__main__":

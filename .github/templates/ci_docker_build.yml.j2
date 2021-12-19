@@ -1,7 +1,7 @@
 {% import 'common.yml.j2' as common %}
 
 {%- block name -%}
-# Template is at:    .github/templates/docker_builds_ci_workflow.yml.j2
+# Template is at:    .github/templates/ci_docker_build.yml.j2
 # Generation script: .github/scripts/generate_ci_workflows.py
 name: !{{ build_environment }}
 {%- endblock %}
@@ -13,6 +13,9 @@ on:
     paths:
       - '.circleci/docker/**'
       - '.github/workflows/generated-docker-builds.yml'
+    schedule:
+      - cron: 1 * */7 * *
+
 !{{ common.concurrency(build_environment) }}
 
 env:
@@ -20,7 +23,6 @@ env:
   AWS_DEFAULT_REGION: us-east-1
 
 jobs:
-{% block docker_build +%}
   docker-build:
     runs-on: linux.2xlarge
     timeout-minutes: !{{ common.timeout_minutes }}
@@ -52,4 +54,3 @@ jobs:
         run: |
           # Prune all of the docker images
           docker system prune -af
-{%- endblock %}
