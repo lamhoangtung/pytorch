@@ -29,9 +29,7 @@ jobs:
         run: echo running ciflow-should-run
 
   parallelnative-linux-xenial-py3_6-gcc5_4-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -759,9 +757,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   caffe2-linux-xenial-py3_6-gcc5_4-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -977,9 +973,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-bionic-cuda10_2-py3_9-gcc7-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3267,9 +3261,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   libtorch-linux-xenial-cuda10_2-py3_6-gcc7-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3474,9 +3466,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   ios-12-5-1-arm64-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3534,9 +3524,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-arm64-coreml-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3594,9 +3582,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-arm64-full-jit-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3654,9 +3640,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-arm64-custom-ops-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3714,9 +3698,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-arm64-metal-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3774,9 +3756,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-x86-64-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3834,9 +3814,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-x86-64-coreml-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3894,9 +3872,7 @@ jobs:
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
   ios-12-5-1-x86-64-full-jit-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     timeout-minutes: 240
     env:
@@ -3953,11 +3929,8 @@ jobs:
           python -VV
           export CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}
           scripts/build_ios.sh
-
   macos-11-py3-x86-64-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-11
     env:
       JOB_BASE_NAME: macos-11-py3-x86-64
@@ -4013,7 +3986,6 @@ jobs:
           if-no-files-found: error
           path:
             artifacts.zip
-
   macos-11-py3-x86-64-test_default_1_2:
     needs: [macos-11-py3-x86-64-build]
     runs-on: macos-11
@@ -4238,11 +4210,8 @@ jobs:
           python3 -m pip install -r requirements.txt
           python3 -m pip install boto3==1.19.12
           python3 -m tools.stats.print_test_stats --upload-to-s3 --compare-with-s3 test
-
   macos-10-15-py3-lite-interpreter-x86-64-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     env:
       JOB_BASE_NAME: macos-10-15-py3-lite-interpreter-x86-64
@@ -4286,12 +4255,8 @@ jobs:
         run: |
           echo "CMAKE_PREFIX_PATH=${CONDA_PREFIX:-"$(dirname "$(which conda)")/../"}" >> "${GITHUB_ENV}"
           .jenkins/pytorch/macos-build.sh
-
-
   macos-10-15-py3-arm64-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: macos-10.15
     env:
       JOB_BASE_NAME: macos-10-15-py3-arm64
@@ -4345,11 +4310,8 @@ jobs:
           if-no-files-found: error
           path:
             artifacts.zip
-
   libtorch-linux-xenial-cuda11_3-py3_6-gcc7-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:

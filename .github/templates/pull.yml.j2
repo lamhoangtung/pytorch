@@ -17,7 +17,6 @@ on:
 !{{ common.concurrency("pull") }}
 
 jobs:
-
 {% for job in jobs -%}
     {%- include job.template %}
 {% endfor %}

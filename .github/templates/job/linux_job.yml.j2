@@ -1,7 +1,7 @@
   !{{ job.build_name() }}:
-    {% if use_ciflow %}
+    {%- if use_ciflow %}
     needs: [ciflow-should-run]
-    {% endif %}
+    {%- endif %}
     runs-on: linux.2xlarge
     timeout-minutes: !{{ common.timeout_minutes }}
     env:

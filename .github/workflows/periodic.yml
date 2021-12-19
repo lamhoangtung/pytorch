@@ -24,11 +24,8 @@ jobs:
     steps:
       - name: noop
         run: echo running ciflow-should-run
-
   periodic-win-vs2019-cuda11_5-py3-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: "windows.4xlarge"
     timeout-minutes: 240
     env:
@@ -819,11 +816,8 @@ jobs:
         # Should remove the entirety of pytorch-${{ github.run_id }}
         run: |
           rm -rf ./*
-
   periodic-win-vs2019-cuda11_1-py3-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: "windows.4xlarge"
     timeout-minutes: 240
     env:
@@ -1449,9 +1443,7 @@ jobs:
         run: |
           rm -rf ./*
   periodic-linux-bionic-cuda11_5-py3_6-gcc7-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -2447,9 +2439,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-libtorch-linux-bionic-cuda11_5-py3_6-gcc7-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -2654,9 +2644,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3656,9 +3644,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-libtorch-linux-xenial-cuda11_1-py3_6-gcc7-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3863,9 +3849,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-build:
-    
     needs: [ciflow-should-run]
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:

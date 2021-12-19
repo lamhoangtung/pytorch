@@ -15,10 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
-
   win-vs2019-cpu-py3-build:
-    
     runs-on: "windows.4xlarge"
     timeout-minutes: 240
     env:
@@ -607,9 +604,7 @@ jobs:
         # Should remove the entirety of pytorch-${{ github.run_id }}
         run: |
           rm -rf ./*
-
   win-vs2019-cuda11_3-py3-build:
-    
     runs-on: "windows.4xlarge"
     timeout-minutes: 240
     env:
@@ -1227,7 +1222,6 @@ jobs:
         run: |
           rm -rf ./*
   linux-xenial-py3_6-gcc5_4-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -2979,7 +2973,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-docs-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -3320,7 +3313,6 @@ jobs:
           path: cppdocs/
           s3-prefix: pytorch/${{ github.event.pull_request.number }}/cppdocs
   linux-xenial-py3_6-gcc7-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -4304,7 +4296,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-xenial-py3-clang5-mobile-build-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -4509,7 +4500,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-xenial-py3-clang5-mobile-custom-build-static-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -4714,7 +4704,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-xenial-py3_6-clang7-asan-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -5698,7 +5687,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-xenial-py3_6-clang7-onnx-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -6426,7 +6414,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-xenial-cuda11_3-py3_6-gcc7-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -7422,7 +7409,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-bionic-py3_6-clang9-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -8662,7 +8648,6 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   linux-vulkan-bionic-py3_6-clang9-build:
-    
     runs-on: linux.2xlarge
     timeout-minutes: 240
     env:
@@ -9135,7 +9120,6 @@ jobs:
           docker system prune -af
   # building and testing in a single job since bazel runs only small subset of tests
   pytorch-linux-xenial-py3-clang5-android-ndk-r19c-gradle-custom-build-single-build-and-test:
-    
     runs-on: linux.2xlarge
     env:
       BUILD_ENVIRONMENT: pytorch-linux-xenial-py3-clang5-android-ndk-r19c-gradle-custom-build-single
@@ -9365,7 +9349,6 @@ jobs:
           docker system prune -af
   # building and testing in a single job since bazel runs only small subset of tests
   pytorch-linux-xenial-py3-clang5-android-ndk-r19c-gradle-custom-build-single-full-jit-build-and-test:
-    
     runs-on: linux.2xlarge
     env:
       BUILD_ENVIRONMENT: pytorch-linux-xenial-py3-clang5-android-ndk-r19c-gradle-custom-build-single-full-jit
@@ -9595,7 +9578,6 @@ jobs:
           docker system prune -af
   # building and testing in a single job since bazel runs only small subset of tests
   linux-xenial-cuda11_3-py3_6-gcc7-bazel-test-build-and-test:
-    
     runs-on: linux.2xlarge
     env:
       BUILD_ENVIRONMENT: linux-xenial-cuda11.3-py3.6-gcc7-bazel-test

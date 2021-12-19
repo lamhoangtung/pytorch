@@ -1,20 +1,7 @@
-{%- macro wait_and_kill_ssh() -%}
-      - name: Wait until all sessions have drained
-        shell: powershell
-        if: always()
-        timeout-minutes: 120
-        run: |
-          .github\scripts\wait_for_ssh_to_drain.ps1
-      - name: Kill active ssh sessions if still around (Useful if workflow was cancelled)
-        shell: powershell
-        if: always()
-        run: |
-          .github\scripts\kill_active_ssh_sessions.ps1
-{%- endmacro %}
   !{{ job.build_name() }}:
-    {% if use_ciflow %}
+    {%- if use_ciflow %}
     needs: [ciflow-should-run]
-    {% endif %}
+    {%- endif %}
     runs-on: "windows.4xlarge"
     timeout-minutes: !{{ common.timeout_minutes }}
     env:
@@ -85,7 +72,7 @@
           if-no-files-found: error
           name: ${{ env.BUILD_ENVIRONMENT }}
           path: C:\${{ github.run_id }}\build-results
-      !{{ wait_and_kill_ssh() }}
+      !{{ common.win_wait_and_kill_ssh() }}
       - name: Cleanup build-results and workspaces
         if: always()
         shell: bash
@@ -182,7 +169,7 @@
       !{{ common.upload_downloaded_files(name='windows') }}
       !{{ common.upload_test_reports(name='windows') }}
       !{{ common.render_test_results() }}
-      !{{ wait_and_kill_ssh() }}
+      !{{ common.win_wait_and_kill_ssh() }}
       !{{ common.parse_ref() }}
       !{{ common.upload_test_statistics(job.build_environment) }}
       - name: Cleanup workspace
