@@ -9,9 +9,7 @@ name: pull
 on:
   pull_request
 
-concurrency:
-  group: ci-pull-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+!{{ common.concurrency("pull") }}
 
 jobs:
 {% for job in jobs -%}

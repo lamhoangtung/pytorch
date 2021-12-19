@@ -13,9 +13,7 @@ on:
   schedule:
     - cron: 45 0,4,8,12,16,20 * * *
 
-concurrency:
-  group: ci-periodic-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+!{{ common.concurrency("periodic") }}
 
 jobs:
 {% for job in jobs -%}

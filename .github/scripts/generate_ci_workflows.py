@@ -2,7 +2,7 @@
 
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, Set, List
+from typing import Dict, List, Any
 
 import jinja2
 from typing_extensions import Literal, TypedDict
@@ -103,16 +103,16 @@ class CIWorkflow:
     def normalized_build_environment(self, suffix: str) -> str:
         return self.build_environment.replace(".", "_") + suffix
 
-    def build_name(self):
+    def build_name(self) -> str:
         return self.normalized_build_environment("-build")
 
-    def test_name(self):
+    def test_name(self) -> str:
         return self.normalized_build_environment("-test")
 
-    def docs_name(self):
+    def docs_name(self) -> str:
         return self.normalized_build_environment("-docs")
 
-    def test_jobs(self):
+    def test_jobs(self) -> Any:
         if self.arch == "linux":
             MULTIGPU_RUNNER_TYPE = "linux.16xlarge.nvidia.gpu"
             DISTRIBUTED_GPU_RUNNER_TYPE = "linux.8xlarge.nvidia.gpu"
@@ -583,13 +583,13 @@ def main() -> None:
         undefined=jinja2.StrictUndefined,
     )
 
-    def generate_workflow(jobs, template, f):
-        f = GITHUB_DIR / "workflows" / f
-        template = jinja_env.get_template(template)
+    def generate_workflow(jobs: List[CIWorkflow], template_path: str, output_path: str) -> None:
+        p: Path = GITHUB_DIR / "workflows" / output_path
+        template = jinja_env.get_template(template_path)
         content = template.render(jobs=jobs)
 
-        with open(f, "w") as f:
-            f.write(content)
+        with open(p, "w") as output_file:
+            output_file.write(content)
 
     generate_workflow(PULL_JOBS, "pull.yml.j2", "pull.yml")
     generate_workflow(PERIODIC_JOBS, "periodic.yml.j2", "periodic.yml")

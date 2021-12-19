@@ -16,9 +16,7 @@ on:
       - release/*
       - fbsync
 
-concurrency:
-  group: ci-trunk-${{ github.event.pull_request.number || github.sha }}
-  cancel-in-progress: true
+!{{ common.concurrency("trunk") }}
 
 jobs:
 {% for job in jobs -%}
