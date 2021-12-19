@@ -13,10 +13,6 @@ on:
     paths:
       - '.circleci/docker/**'
       - '.github/workflows/generated-docker-builds.yml'
-{%- if is_scheduled %}
-  schedule:
-    - cron: !{{ is_scheduled }}
-{%- endif %}
 !{{ common.concurrency(build_environment) }}
 
 env:

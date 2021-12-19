@@ -1,33 +1,3 @@
-{% import 'common.yml.j2' as common %}
-
-{%- block name -%}
-# Template is at:    .github/templates/linux_ci_workflow.yml.j2
-# Generation script: .github/scripts/generate_ci_workflows.py
-name: pr_ci
-{%- endblock %}
-
-on:
-  pull_request:
-    types: [opened, synchronize, reopened, !{{ ciflow_config.trigger_action }}]
-
-{# {%- if is_scheduled %}
-  schedule:
-    - cron: !{{ is_scheduled }}
-{%- else %}
-  push:
-    branches:
-      - master
-      - release/*
-      - fbsync
-{%- endif %}
-  workflow_dispatch: #}
-
-concurrency:
-  group: ci-${{ github.event.pull_request.number || github.sha }}-${{ github.event_name == 'workflow_dispatch' }}
-  cancel-in-progress: true
-
-jobs:
-  {%- for job in jobs %}
   !{{ job.build_name() }}:
     runs-on: linux.2xlarge
     timeout-minutes: !{{ common.timeout_minutes }}
@@ -165,13 +135,12 @@ jobs:
     {%- if job.build_with_debug %}
       DEBUG: 1
     {%- endif %}
-      DOCKER_IMAGE: ${{ needs.build.outputs.docker_image }}
+      DOCKER_IMAGE: ${{ needs.!{{ job.build_name() }}.outputs.docker_image }}
       JOB_BASE_NAME: !{{ job.build_environment }}-test
       TEST_CONFIG: !{{ test_job.config }}
       SHARD_NUMBER: !{{ test_job.shard }}
       NUM_TEST_SHARDS: !{{ test_job.num_shards }}
-      # TODO
-      {# PYTORCH_IGNORE_DISABLED_ISSUES: ${{ needs.generate-test-matrix.outputs.ignore-disabled-issues }} #}
+      # TODO{# PYTORCH_IGNORE_DISABLED_ISSUES: ${{ needs.generate-test-matrix.outputs.ignore-disabled-issues }} #}
     steps:
       !{{ common.setup_ec2_linux() }}
       !{{ common.checkout_pytorch("recursive") }}
@@ -284,16 +253,19 @@ jobs:
       !{{ common.teardown_ec2_linux() }}
 {%- endfor %}
 {%- endif -%}
-{# {%- if enable_doc_jobs %}
-  build-docs:
+
+{%- if job.enable_doc_jobs %}
+  !{{ job.docs_name() }}:
     runs-on: linux.2xlarge
     timeout-minutes: !{{ common.timeout_minutes }}
     strategy:
       matrix:
         docs_type: [cpp, python]
-    needs: [build, !{{ ciflow_config.root_job_name }}]
+    needs: [!{{ job.build_name() }}]
     env:
-      DOCKER_IMAGE: ${{ needs.build.outputs.docker_image }}
+      AWS_DEFAULT_REGION: us-east-1
+      ALPINE_IMAGE: "308535385114.dkr.ecr.us-east-1.amazonaws.com/tool/alpine"
+      DOCKER_IMAGE: ${{ needs.!{{ job.build_name() }}.outputs.docker_image }}
       DOCS_TYPE: ${{ matrix.docs_type }}
       WITH_PUSH: ${{ github.event_name == 'schedule' }}
     steps:
@@ -309,7 +281,7 @@ jobs:
       - name: Unzip artifacts
         run: |
           unzip -o artifacts.zip
-{%- if is_scheduled %}
+{%- if job.is_scheduled %}
       - name: Generate netrc (only for docs-push)
         if: ${{ github.event_name == 'schedule' }}
         env:
@@ -344,7 +316,7 @@ jobs:
             --tty \
             --detach \
             --user jenkins \
-{%- if is_scheduled %}
+{%- if job.is_scheduled %}
             -v "${RUNNER_TEMP}/.netrc":/home/jenkins/.netrc \
 {%- endif %}
             -v "${GITHUB_WORKSPACE}:/var/lib/jenkins/workspace" \
@@ -374,5 +346,4 @@ jobs:
           s3-bucket: doc-previews
           path: cppdocs/
           s3-prefix: pytorch/${{ github.event.pull_request.number }}/cppdocs
-{%- endif -%} #}
-{%- endfor %}
+{%- endif -%}

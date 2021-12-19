@@ -1,29 +1,19 @@
 {% import 'common.yml.j2' as common %}
 
 {%- block name -%}
-# Template is at:    .github/templates/linux_ci_workflow.yml.j2
+# Template is at:    .github/templates/pull.yml.j2
 # Generation script: .github/scripts/generate_ci_workflows.py
-name: pr_ci
+name: pull
 {%- endblock %}
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, !{{ ciflow_config.trigger_action }}]
+  pull_request
 
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.sha }}
+  group: ci-pull-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:
-{% for job in linux_jobs -%}
-    {%- include 'linux_job.yml.j2' %}
-{% endfor %}
-{%- for job in windows_jobs -%}
-    {%- include 'windows_job.yml.j2' %}
-{% endfor %}
-{%- for job in android_jobs -%}
-    {%- include 'android_job.yml.j2' %}
-{% endfor %}
-{%- for job in bazel_jobs -%}
-    {%- include 'bazel_job.yml.j2' %}
+{% for job in jobs -%}
+    {%- include job.template %}
 {% endfor %}

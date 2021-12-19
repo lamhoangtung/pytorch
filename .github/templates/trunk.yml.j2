@@ -1,0 +1,26 @@
+{% import 'common.yml.j2' as common %}
+
+{%- block name -%}
+# Template is at:    .github/templates/trunk.yml.j2
+# Generation script: .github/scripts/generate_ci_workflows.py
+name: trunk
+{%- endblock %}
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, unassigned]
+
+  push:
+    branches:
+      - master
+      - release/*
+      - fbsync
+
+concurrency:
+  group: ci-trunk-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+{% for job in jobs -%}
+    {%- include job.template %}
+{% endfor %}
