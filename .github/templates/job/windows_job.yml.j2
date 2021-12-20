@@ -1,8 +1,5 @@
   !{{ job.build_name() }}:
-    {%- if use_ciflow %}
-    needs: [ciflow-should-run]
-    {%- endif %}
-    runs-on: "windows.4xlarge"
+    runs-on: [self-hosted, "windows.4xlarge"]
     timeout-minutes: !{{ common.timeout_minutes }}
     env:
       BUILD_ENVIRONMENT: !{{ job.build_environment }}
@@ -122,7 +119,7 @@
       https_proxy: "!{{ common.squid_proxy }}"
       # TODO{# PYTORCH_IGNORE_DISABLED_ISSUES: ${{ needs.generate-test-matrix.outputs.ignore-disabled-issues }} #}
     needs: [!{{ job.build_name() }}]
-    runs-on: !{{ test_job.runner }}
+    runs-on: [self-hosted, !{{ test_job.runner }}]
     steps:
       !{{ common.display_ec2_information() }}
       - name: "[FB EMPLOYEES] Enable SSH (Click me for login details)"

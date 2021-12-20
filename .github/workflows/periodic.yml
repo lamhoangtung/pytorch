@@ -3,8 +3,9 @@
 name: periodic
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, unassigned]
+  push:
+    tags:
+      - 'ciflow/periodic/*'
 
   schedule:
     - cron: 45 0,4,8,12,16,20 * * *
@@ -14,19 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ciflow-should-run:
-    runs-on: ubuntu-18.04
-    if: ${{ (github.repository == 'pytorch/pytorch') &&
-            (github.event_name == 'push' || github.event_name == 'schedule') ||
-            contains(github.event.pull_request.labels.*.name, 'ciflow/all') ||
-            false
-         }}
-    steps:
-      - name: noop
-        run: echo running ciflow-should-run
   periodic-win-vs2019-cuda11_5-py3-build:
-    needs: [ciflow-should-run]
-    runs-on: "windows.4xlarge"
+    runs-on: [self-hosted, "windows.4xlarge"]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-win-vs2019-cuda11.5-py3
@@ -161,7 +151,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_5-py3-build]
-    runs-on: windows.4xlarge
+    runs-on: [self-hosted, windows.4xlarge]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -327,7 +317,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_5-py3-build]
-    runs-on: windows.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, windows.8xlarge.nvidia.gpu]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -501,7 +491,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_5-py3-build]
-    runs-on: windows.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, windows.8xlarge.nvidia.gpu]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -675,7 +665,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_5-py3-build]
-    runs-on: windows.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, windows.8xlarge.nvidia.gpu]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -817,8 +807,7 @@ jobs:
         run: |
           rm -rf ./*
   periodic-win-vs2019-cuda11_1-py3-build:
-    needs: [ciflow-should-run]
-    runs-on: "windows.4xlarge"
+    runs-on: [self-hosted, "windows.4xlarge"]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-win-vs2019-cuda11.1-py3
@@ -953,7 +942,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_1-py3-build]
-    runs-on: windows.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, windows.8xlarge.nvidia.gpu]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -1127,7 +1116,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_1-py3-build]
-    runs-on: windows.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, windows.8xlarge.nvidia.gpu]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -1301,7 +1290,7 @@ jobs:
       https_proxy: "http://internal-tf-lb-20210727220640487900000002-835786077.us-east-1.elb.amazonaws.com:3128"
       # TODO
     needs: [periodic-win-vs2019-cuda11_1-py3-build]
-    runs-on: windows.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, windows.8xlarge.nvidia.gpu]
     steps:
       - name: Display EC2 information
         shell: bash
@@ -1443,8 +1432,7 @@ jobs:
         run: |
           rm -rf ./*
   periodic-linux-bionic-cuda11_5-py3_6-gcc7-build:
-    needs: [ciflow-should-run]
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-bionic-cuda11.5-py3.6-gcc7
@@ -1660,7 +1648,7 @@ jobs:
           docker system prune -af
   periodic-linux-bionic-cuda11_5-py3_6-gcc7-test_distributed_1_1:
     needs: [periodic-linux-bionic-cuda11_5-py3_6-gcc7-build]
-    runs-on: linux.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.8xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-bionic-cuda11.5-py3.6-gcc7
@@ -1920,7 +1908,7 @@ jobs:
           docker system prune -af
   periodic-linux-bionic-cuda11_5-py3_6-gcc7-test_default_1_2:
     needs: [periodic-linux-bionic-cuda11_5-py3_6-gcc7-build]
-    runs-on: linux.4xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.4xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-bionic-cuda11.5-py3.6-gcc7
@@ -2180,7 +2168,7 @@ jobs:
           docker system prune -af
   periodic-linux-bionic-cuda11_5-py3_6-gcc7-test_default_2_2:
     needs: [periodic-linux-bionic-cuda11_5-py3_6-gcc7-build]
-    runs-on: linux.4xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.4xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-bionic-cuda11.5-py3.6-gcc7
@@ -2439,8 +2427,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-libtorch-linux-bionic-cuda11_5-py3_6-gcc7-build:
-    needs: [ciflow-should-run]
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-libtorch-linux-bionic-cuda11.5-py3.6-gcc7
@@ -2644,8 +2631,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-build:
-    needs: [ciflow-should-run]
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
@@ -2862,7 +2848,7 @@ jobs:
           docker system prune -af
   periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-test_distributed_1_1:
     needs: [periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-build]
-    runs-on: linux.8xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.8xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
@@ -3123,7 +3109,7 @@ jobs:
           docker system prune -af
   periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-test_default_1_2:
     needs: [periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-build]
-    runs-on: linux.4xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.4xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
@@ -3384,7 +3370,7 @@ jobs:
           docker system prune -af
   periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-test_default_2_2:
     needs: [periodic-linux-xenial-cuda11_1-py3_6-gcc7-debug-build]
-    runs-on: linux.4xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.4xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda11.1-py3.6-gcc7-debug
@@ -3644,8 +3630,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-libtorch-linux-xenial-cuda11_1-py3_6-gcc7-build:
-    needs: [ciflow-should-run]
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-libtorch-linux-xenial-cuda11.1-py3.6-gcc7
@@ -3849,8 +3834,7 @@ jobs:
           # Prune all of the docker images
           docker system prune -af
   periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-build:
-    needs: [ciflow-should-run]
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda10.2-py3-gcc7-slow-gradcheck
@@ -4066,7 +4050,7 @@ jobs:
           docker system prune -af
   periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-test_default_1_2:
     needs: [periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-build]
-    runs-on: linux.4xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.4xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda10.2-py3-gcc7-slow-gradcheck
@@ -4326,7 +4310,7 @@ jobs:
           docker system prune -af
   periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-test_default_2_2:
     needs: [periodic-linux-xenial-cuda10_2-py3-gcc7-slow-gradcheck-build]
-    runs-on: linux.4xlarge.nvidia.gpu
+    runs-on: [self-hosted, linux.4xlarge.nvidia.gpu]
     timeout-minutes: 240
     env:
       BUILD_ENVIRONMENT: periodic-linux-xenial-cuda10.2-py3-gcc7-slow-gradcheck

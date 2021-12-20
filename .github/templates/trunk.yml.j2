@@ -7,10 +7,9 @@ name: trunk
 {%- endblock %}
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, unassigned]
-
   push:
+    tags:
+      - ciflow/trunk/*
     branches:
       - master
       - release/*
@@ -19,7 +18,6 @@ on:
 !{{ common.concurrency("trunk") }}
 
 jobs:
-  !{{ common.ciflow_job() }}
 
 {% for job in jobs -%}
     {%- include job.template %}

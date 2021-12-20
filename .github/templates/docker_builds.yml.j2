@@ -24,7 +24,7 @@ env:
 
 jobs:
   docker-build:
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: !{{ common.timeout_minutes }}
     strategy:
       matrix:

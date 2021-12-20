@@ -1,9 +1,6 @@
   # building and testing in a single job since bazel runs only small subset of tests
   !{{ job.normalized_build_environment("-build-and-test") }}:
-    {%- if use_ciflow %}
-    needs: [ciflow-should-run]
-    {%- endif %}
-    runs-on: !{{ job.test_runner_type }}
+    runs-on: [self-hosted, !{{ job.test_runner_type }}]
     env:
       BUILD_ENVIRONMENT: !{{ job.build_environment }}
       DOCKER_IMAGE_BASE: !{{ job.docker_image_base }}

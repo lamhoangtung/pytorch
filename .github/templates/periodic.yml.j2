@@ -7,8 +7,9 @@ name: periodic
 {%- endblock %}
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened, unassigned]
+  push:
+    tags:
+      - 'ciflow/periodic/*'
 
   schedule:
     - cron: 45 0,4,8,12,16,20 * * *
@@ -16,7 +17,6 @@ on:
 !{{ common.concurrency("periodic") }}
 
 jobs:
-  !{{ common.ciflow_job() }}
 {% for job in jobs -%}
     {%- include job.template %}
 {% endfor %}

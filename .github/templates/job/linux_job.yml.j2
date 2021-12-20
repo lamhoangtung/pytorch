@@ -1,8 +1,5 @@
   !{{ job.build_name() }}:
-    {%- if use_ciflow %}
-    needs: [ciflow-should-run]
-    {%- endif %}
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: !{{ common.timeout_minutes }}
     env:
       BUILD_ENVIRONMENT: !{{ job.build_environment }}
@@ -114,7 +111,7 @@
   {%- for test_job in job.test_jobs() %}
   !{{ test_job.name }}:
     needs: [!{{ job.build_name() }}]
-    runs-on: !{{ test_job.runner }}
+    runs-on: [self-hosted, !{{ test_job.runner }}]
     timeout-minutes: !{{ common.timeout_minutes }}
     env:
       BUILD_ENVIRONMENT: !{{ job.build_environment }}
@@ -259,7 +256,7 @@
 
 {%- if job.enable_doc_jobs %}
   !{{ job.docs_name() }}:
-    runs-on: linux.2xlarge
+    runs-on: [self-hosted, linux.2xlarge]
     timeout-minutes: !{{ common.timeout_minutes }}
     strategy:
       matrix:
