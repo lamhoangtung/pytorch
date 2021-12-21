@@ -6,7 +6,7 @@ namespace caffe2 {
 namespace serialize {
 
 constexpr uint64_t kMinSupportedFileFormatVersion = 0x1L;
-constexpr uint64_t kMaxSupportedFileFormatVersion = 0x6L;
+constexpr uint64_t kMaxSupportedFileFormatVersion = 0x7L;
 
 // Versions (i.e. why was the version number bumped?)
 
@@ -47,7 +47,19 @@ constexpr uint64_t kMaxSupportedFileFormatVersion = 0x6L;
 // 5. (Dynamic) Stops torch.full inferring a floating point dtype
 //      when given bool or integer fill values.
 // 6. Write version string to `./data/version` instead of `version`.
-constexpr uint64_t kProducedFileFormatVersion = 0x3L;
+
+// This is set to 7 from 3 due to a different interpretation of what
+// file format version is. Whenever there is new upgrader introduced,
+// this number should be bumped.
+//     1. aten::div is changed at version 4
+//     2. aten::full is changed at version 5
+//     3. torch.package uses version 6
+constexpr uint64_t kProducedFileFormatVersion = 0x7L;
+
+// Absolute minimum version we will write packages. This
+// means that every package from now on will always be
+// greater than this number.
+constexpr uint64_t kMinProducedFileFormatVersion = 0x3L;
 
 // The version we write when the archive contains bytecode.
 // It must be higher or eq to kProducedFileFormatVersion.
