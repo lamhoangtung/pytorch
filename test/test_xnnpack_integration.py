@@ -104,6 +104,7 @@ class TestXNNPACKOps(TestCase):
         if use_bias:
             bias = torch.rand((output_channels))
 
+        print('input size(): ', input_data.size(), '; format: ', format)
         ref_result = F.conv2d(input_data, weight, bias,
                               strides, paddings, dilations, groups)
         packed_weight_bias = torch.ops.prepacked.conv2d_clamp_prepack(weight, bias,

@@ -18,6 +18,8 @@
 #include <nnpack.h>
 #endif
 
+#include <iostream>
+
 constexpr int MIOPEN_DIM_MAX = 5;
 
 namespace at { namespace native {
@@ -623,15 +625,14 @@ static auto view3d(const at::Tensor& tensor) -> at::Tensor {
   return tensor.squeeze(2);
 }
 
-
 static at::Tensor subtensor(at::Tensor& tensor, int dim, int groups, int g) {
   if (!tensor.defined()) {
     return at::Tensor();
   }
+  const auto memory_format = tensor.suggest_memory_format();
   int64_t n = tensor.sizes()[dim] / groups;
-  return tensor.narrow(dim, n * g, n).contiguous();
+  return tensor.narrow(dim, n * g, n).contiguous(memory_format);
 }
-
 
 at::Tensor conv1d(
     const Tensor& input, const Tensor& weight, const c10::optional<Tensor>& bias_opt,
@@ -1059,6 +1060,11 @@ static inline at::MemoryFormat determine_backend_memory_format(
         backend_memory_format = (k == 5) ? at::MemoryFormat::Contiguous /*at::MemoryFormat::ChannelsLast3d*/ : at::MemoryFormat::ChannelsLast;
       }
       break;
+    case ConvBackend::Slow2d:
+      if (thnn_conv_use_channels_last(input, weight)) {
+        backend_memory_format = at::MemoryFormat::ChannelsLast;
+      }
+      break;
     default:
       backend_memory_format = at::MemoryFormat::Contiguous;
   }
@@ -1114,6 +1120,8 @@ at::Tensor _convolution(
       (input.requires_grad() || weight.requires_grad() || (bias.defined() && bias.requires_grad()));
   ConvBackend backend = select_conv_backend(input, weight, bias_sizes_opt, need_backward, params);
   at::MemoryFormat backend_memory_format = determine_backend_memory_format(input, weight, backend);
+
+  std::cout << "backend: " << int(backend) << "; memory_format: " << backend_memory_format << "; input.sizes(): " << input.sizes() << std::endl;
 
   // Call the backend.
   Tensor output;
@@ -1234,11 +1242,11 @@ at::Tensor _convolution(
     case ConvBackend::SlowDilated3d:
     case ConvBackend::SlowTranspose2d:
     case ConvBackend::SlowTranspose3d:
+      input = input.contiguous(backend_memory_format);
       if (params.groups == 1) {
-        output = _convolution_nogroup_backend(input.contiguous(), weight, bias, backend, params);
+        output = _convolution_nogroup_backend(input, weight, bias, backend, params);
       } else {
         std::vector<Tensor> outputs(params.groups);
-        input = input.contiguous();
         for (const auto g : c10::irange(params.groups)) {
           auto input_g = subtensor(input, 1, params.groups, g);
           auto weight_g = subtensor(weight, 0, params.groups, g);
@@ -1736,7 +1744,7 @@ std::tuple<Tensor, Tensor, Tensor> convolution_backward(
     case ConvBackend::SlowTranspose2d:
     case ConvBackend::SlowTranspose3d:
     {
-      input = input.contiguous();
+      input = input.contiguous(backend_memory_format);
       if (params.groups == 1) {
         std::tie(backend_grad_input, backend_grad_weight, backend_grad_bias) =
           _convolution_backward_nogroup_backend(
