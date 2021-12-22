@@ -487,6 +487,8 @@ def maybe_insert_input_observer_for_arg_or_kwarg(
                 (arg_as_input_target_dtype != torch.float)
             )
 
+        act_post_process_ctr = qconfig.activation
+
     if needs_obs:
 
         new_obs_mod = act_post_process_ctr()
@@ -729,7 +731,7 @@ def maybe_insert_observers_before_graph_output(
             # check dtype of this node
             this_node_dtype = get_arg_target_dtype_as_output(
                 maybe_node, modules, node_name_to_target_dtype)
-            if this_node_dtype != target_dtype:
+            if this_node_dtype == torch.float and this_node_dtype != target_dtype:
                 # insert observer
                 qconfig = qconfig_map.get(maybe_node.name)
                 # TODO(future PR): see if we need to allow specifying qconfig
@@ -1004,7 +1006,6 @@ def insert_observers_for_model(
 
     inputs_seen_counter = 0
     outputs_seen_counter = 0
-    results_node = None
 
     # first, populate the dtype map based only on qconfig and qhandler
     # this assumes:
@@ -1018,6 +1019,10 @@ def insert_observers_for_model(
             node, qconfig, inputs_seen_counter, outputs_seen_counter,
             input_quantized_idxs, output_quantized_idxs, qhandler,
             modules, cache_for_no_tensor_check)
+        if node.op == "placeholder":
+            inputs_seen_counter += 1
+        if node.op == "output":
+            outputs_seen_counter += 1
 
     # Second, for nodes with known input dtypes, propagate them throughout the
     # graph. For example, if there is a call such as
@@ -1035,6 +1040,10 @@ def insert_observers_for_model(
     # nodes before observer insertion, instead of model.graph.nodes.
     nodes_before_observation = list(model.graph.nodes)
 
+    # reset inputs/outputs counters
+    inputs_seen_counter = 0
+    outputs_seen_counter = 0
+    results_node = None
     for node in nodes_before_observation:
 
         if node.op == 'placeholder':
@@ -1205,7 +1214,11 @@ def run_prepare_fx_on_standalone_modules(
         prepare = \
             torch.ao.quantization.quantize_fx._prepare_standalone_module_fx  # type: ignore[attr-defined]
         observed_standalone_module = \
-            prepare(standalone_module, sm_qconfig_dict, sm_prepare_config_dict, sm_backend_config_dict)
+            prepare(
+                standalone_module,
+                sm_qconfig_dict,
+                sm_prepare_config_dict,
+                backend_config_dict=sm_backend_config_dict)
         preserved_attributes = \
             set(sm_prepare_config_dict.get("preserved_attributes", []))
         observed_standalone_module = ObservedStandaloneGraphModule(
